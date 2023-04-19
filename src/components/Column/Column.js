@@ -9,11 +9,12 @@ import { mapOrder } from 'utilities/sorts'
 function Column(props) {
 
   const { column } = props
+  const onCardDrop = props.onCardDrop
 
   const cards = mapOrder(column.cards, column.cardOder, 'id')
 
   // eslint-disable-next-line no-console
-  const onCardDrop = (dropResult) => { console.log(dropResult) }
+
 
   return (
     <div className ="column">
@@ -21,7 +22,7 @@ function Column(props) {
       <div className="card-list">
         <Container
           groupName="col"
-          onDrop={onCardDrop}
+          onDrop={dropResult => onCardDrop(column.id, dropResult)}
           getChildPayload={index => cards[index]
           }
           dragClass="card-ghost"
@@ -40,7 +41,11 @@ function Column(props) {
         </Container>
       </div>
 
-      <footer> Add another card</footer>
+      <footer>
+        <div className="footer-actions">
+          <i className='fa fa-plus icon' />Add another card
+        </div>
+      </footer>
 
     </div>
   )

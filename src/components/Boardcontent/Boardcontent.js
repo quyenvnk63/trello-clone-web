@@ -6,6 +6,7 @@ import './Boardcontent.scss'
 
 import Column from 'components/Column/Column'
 import { mapOrder } from 'utilities/sorts'
+import { applyDrag } from 'utilities/drapDrop'
 
 import { initialData } from 'actions/initialData'
 
@@ -28,7 +29,30 @@ function Boardcontent() {
 
   const onColumnDrop = (dropResult) => {
     // eslint-disable-next-line no-console
-    console.log(dropResult)
+    // console.log(dropResult)
+    let newColumns = [ ...columns]
+    newColumns = applyDrag(newColumns, dropResult)
+
+    let newBoard = { ...broad }
+    newBoard.columnOrder = newColumns.map(column => column.id)
+    newBoard.columns = newColumns
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
+  const onCardDrop = (columnId, dropResult) => {
+    if (dropResult.addedIndex !== null || dropResult.removedIndex !== null) {
+      // console.log(dropResult)
+      let newColumns = [ ...columns]
+      let currentColumn = newColumns.find(column => column.id === columnId)
+      currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
+
+      currentColumn.cardOder = currentColumn.cards.map(c => c.id)
+      setColumns(newColumns)
+
+    }
+
   }
 
   return (
@@ -48,10 +72,14 @@ function Boardcontent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} />
+            <Column column={column} onCardDrop = {onCardDrop}/>
           </Draggable>
         ))}
       </Container>
+      <div className="add-new-column">
+        <i className='fa fa-plus icon' />Add another card
+      </div>
+
 
     </div>
   )
