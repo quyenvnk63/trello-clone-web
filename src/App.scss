@@ -11,7 +11,10 @@ body {
 .trello-master{
     height: 100vh;
     overflow: hidden;
-    background-color: $broard-bg-color;     
-       
-    
+    background-color: $broard-bg-color;   
+    color: $app-main-text-color;
+    .icon {
+        font-size:  14px;
+        margin-right: 3px;
+    }  
     }
